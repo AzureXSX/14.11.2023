@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Book</title>
+    <link rel="stylesheet" href="../PHP-X/book.css" />
+  </head>
+  <body>
+    <div class="main-div-x">
+      <form class="xxx" id="add-book-form">
+        <div class="menu-div-x">
+          <input
+            pattern="[A-Za-z-\s]{3,10}"
+            type="text"
+            placeholder=""
+            name="Title-input"
+            required
+          />
+          <label
+            for="Title-input"
+            style="--m-top: -12.4rem; --m-top-x: -15.5rem"
+            class="placeholder-x"
+            >Title</label
+          >
+          <input
+            pattern="[A-Za-z-\s]{3,10}"
+            type="text"
+            placeholder=""
+            name="Author-input"
+            required
+          />
+          <label
+            for="Author-input"
+            style="--m-top: -3.4rem; --m-top-x: -6.5rem"
+            class="placeholder-x"
+            >Author</label
+          >
+          <input pattern="[0-9]{4}" type="text" placeholder="" name="Year-input" required/>
+          <label
+            for="Year-input"
+            style="--m-top: 5.4rem; --m-top-x: 2.4rem"
+            class="placeholder-x"
+            >Year</label
+          >
+          <input type="submit" value="Add" />
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const Title = document.querySelectorAll("input")[0];
+
+      Title.addEventListener("blur", (e) => {
+        if(e.target.value.length > 0)
+            document.querySelectorAll('label')[0].style.display = 'none';
+        else
+            document.querySelectorAll('label')[0].style.display = 'block';
+      });
+
+      const Author = document.querySelectorAll("input")[1];
+
+      Author.addEventListener("blur", (e) => {
+        if(e.target.value.length > 0)
+            document.querySelectorAll('label')[1].style.display = 'none';
+        else
+            document.querySelectorAll('label')[1].style.display = 'block';
+      });
+
+
+      const Year = document.querySelectorAll("input")[2];
+
+      Year.addEventListener("blur", (e) => {
+        if(e.target.value.length > 0)
+            document.querySelectorAll('label')[2].style.display = 'none';
+        else
+            document.querySelectorAll('label')[2].style.display = 'block';
+      });
+
+      document.getElementById("add-book-form").onsubmit = async (e) => {
+        e.preventDefault();
+
+        if(Title.value.trim().length < 1 || Author.value.trim().length < 1 || Year.value < 1800 || Year.value > 2023){
+            alert('Incorect Input!!!');
+            return;
+        }
+        const data = {
+          title: Title.value,
+          author: Author.value,
+          year: Year.value,
+        };
+
+        const response = fetch("/PHP-X/book.php", {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const datax = await response.then(async (response) => await response.text());        
+        
+        
+        console.log(datax);
+
+        if(datax == 'book was added'){
+            alert('book was added');
+            window.location = '/PHP-X/book.html'
+        }
+        else
+            alert('Book wasn\'t added');
+      };
+    </script>
+  </body>
+</html>

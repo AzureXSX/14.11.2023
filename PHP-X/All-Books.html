@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Books</title>
+    <link rel="stylesheet" href="../PHP-X/book.css" />
+</head>
+<body>
+    <div class="main-div-x">
+      <div class="menu-div-x">
+        <!-- <div class="book-card">
+            <label>Title: </label>
+            <label>Author: </label>
+            <label>Year: </label>
+        </div> -->
+      </div>  
+    </div> 
+    <script>
+         fetch("/PHP-X/book.php", {
+          method: "GET",
+        }).then((response) => {
+          response.json().then((data) => {
+            if(data.length == 0){
+              
+              const temp = document.createElement('div');
+              temp.classList.add('book-card');
+              const tempx = document.createElement('p');
+              tempx.innerText = 'No books in lib!';
+              temp.appendChild(tempx);
+              document.querySelector('.menu-div-x').appendChild(temp);
+            }
+            console.log(data);
+            data.forEach(element => {
+              console.log(element);
+              const temp = document.createElement('div');
+              temp.classList.add('book-card');
+
+              const xT = document.createElement('label');
+              xT.innerText = "Title: " + element.title;
+
+              const xA = document.createElement('label');
+              xA.innerText = "Author: " + element.author;
+
+              const xY = document.createElement('label');
+              xY.innerText = "Year: " + element.year;
+
+
+              temp.appendChild(xT);
+              temp.appendChild(xA);
+              temp.appendChild(xY);
+
+              document.querySelector('.menu-div-x').appendChild(temp);
+              console.log('Finished');
+            });
+          }
+          )
+        });
+    </script>
+</body>
+</html>

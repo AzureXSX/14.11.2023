@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delete Book</title>
+    <link rel="stylesheet" href="../PHP-X/book.css" />
+  </head>
+  <body>
+    <div class="main-div-x">
+      <form class="xxx" id="add-book-form">
+        <div class="menu-div-x">
+          <input
+            pattern="[A-Za-z-\s]{3,10}"
+            type="text"
+            placeholder=""
+            name="Title-input"
+            required
+          />
+          <label
+            for="Title-input"
+            style="--m-top: -3.5rem; --m-top-x: -6.5rem"
+            class="placeholder-x"
+            >Title</label
+          >
+          <input type="submit" style="margin-top: 0.4rem" value="Delete Book" />
+        </div>
+      </form>
+    </div>
+
+    <script>
+      const Title = document.querySelectorAll("input")[0];
+
+      Title.addEventListener("blur", (e) => {
+        if (e.target.value.length > 0)
+          document.querySelectorAll("label")[0].style.display = "none";
+        else document.querySelectorAll("label")[0].style.display = "block";
+      });
+
+      document.getElementById("add-book-form").onsubmit = async (e) => {
+        e.preventDefault();
+        await delete_Book();
+      };
+
+
+      async function delete_Book() {
+
+        if(Title.value.trim().length < 1){
+            alert('Pls enter correct title!');
+            Title.value = '';
+            return;
+        }
+        const data = {
+          title: Title.value,
+        };
+        const response = fetch("/PHP-X/book.php", {
+          method: "DELETE",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const datax = await response.then(
+          async (response) => await response.text()
+        );
+
+        console.log(datax);
+        console.log(datax.includes("deleted"));
+        if (datax.includes("deleted")) {
+          alert("Book was deleted");
+
+          window.location = "/PHP-X/book.html";
+        }else alert("Book wasn't found");
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Books</title>
+    <link rel="stylesheet" href="../PHP-X/book.css" />
+  </head>
+  <body>
+    <div class="main-div-x">
+        <div class="menu-div-x">
+            <button onclick="RedirectX('/PHP-X/Add-Book.html')">Add new book</button>
+            <button onclick="RedirectX('/PHP-X/Delete-Book.html')">Delete book</button>
+            <button onclick="RedirectX('/PHP-X/All-Books.html')" style="margin-bottom: 1rem;">View all books</button>
+        </div>
+    </div>
+
+    <script>
+      function RedirectX(url){
+        window.location = url;
+      }
+
+      function POST_PHP() {
+        const data = new FormData();
+        fetch("/PHP-X/book.php", {
+          method: "POST",
+          body: data,
+        }).then((response) => {
+          console.log(response.json().then((data) => console.log(data)));
+        });
+      }
+      function GET_PHP() {
+        fetch("/PHP-X/book.php", {
+          method: "GET",
+        }).then((response) => {
+          console.log(response.json().then((data) => console.log(data)));
+        });
+      }
+      function DELETE_PHP() {
+        const data = {
+          name: "4",
+        };
+
+        fetch("/PHP-X/book.php", {
+          method: "DELETE",
+          body: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.text();
+          })
+          .then((data) => {
+            console.log("Response:", data);
+          })
+          .catch((error) => {
+            console.error(
+              "There was a problem with the DELETE request:",
+              error
+            );
+          });
+      }
+    </script>
+  </body>
+</html>
